@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from sqlalchemy import (Boolean, DateTime, ForeignKey, Integer, Numeric, String, UniqueConstraint, func)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
