@@ -30,6 +30,7 @@ def register_user(
     db: Session = Depends(get_db),
 ):
     email = str(data.email).strip().lower()
+
     existing_user = db.scalar(
         select(User).where(User.email == email)
     )
@@ -65,6 +66,7 @@ def login_user(
     db: Session = Depends(get_db),
 ):
     email = str(data.email).strip().lower()
+
     user = db.scalar(
         select(User).where(User.email == email)
     )
@@ -82,6 +84,7 @@ def login_user(
 
     token = create_access_token(user.id)
     logger.info("Inicio de sesión correcto: id=%s", user.id)
+
     return TokenResponse(access_token=token)
 
 def get_current_user(
@@ -103,10 +106,11 @@ def get_current_user(
         user_id = int(payload["sub"])
     except (jwt.InvalidTokenError, KeyError, TypeError, ValueError):
         raise unauthorized
+
     user = db.get(User, user_id)
+
     if user is None or not user.is_active:
         raise unauthorized
-
     return user
 
 @router.get("/me", response_model=UserResponse)

@@ -1,12 +1,23 @@
 from datetime import datetime
 from decimal import Decimal
-from sqlalchemy import (Boolean, DateTime, ForeignKey, Integer, Numeric, String, UniqueConstraint, func)
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 class Base(DeclarativeBase):
     pass
+
 class User(Base):
     __tablename__ = "users"
+
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, index=True
     )
@@ -28,6 +39,7 @@ class Category(Base):
     __table_args__ = (
         UniqueConstraint("user_id", "name", "kind"),
     )
+
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, index=True
     )
@@ -44,13 +56,14 @@ class Category(Base):
 
 class Transaction(Base):
     __tablename__ = "transactions"
+
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, index=True
     )
     description: Mapped[str] = mapped_column(
         String(255), nullable=False
     )
-    amount: Mapped[float] = mapped_column(
+    amount: Mapped[Decimal] = mapped_column(
         Numeric(12, 2), nullable=False
     )
     kind: Mapped[str] = mapped_column(
